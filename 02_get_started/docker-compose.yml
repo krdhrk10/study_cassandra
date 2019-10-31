@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  cassandra:
+    container_name: "cassandra"
+    image: cassandra:latest
+    ports:
+      - '9042:9042'
+    volumes:
+      - ./docker/cassandra/data:/var/lib/cassandra
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    container_name: "cassandra_app"
+    depends_on:
+      - cassandra
+    command: |
+      sh -c "tail -f /dev/null"
+    volumes:
+      - ./src:/root/app
